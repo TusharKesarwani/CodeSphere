@@ -3,7 +3,8 @@
   flex-direction: column;
   gap: 8px;
   padding: 0 16px;
-  height: 80vh;
+  margin: 0 0 60px 0;
+  max-height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
 }

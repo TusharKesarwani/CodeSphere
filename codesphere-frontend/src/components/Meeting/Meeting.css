@@ -1,3 +1,35 @@
+::-webkit-scrollbar {
+  width: 1px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.6);
+}
+
+scrollbar-button {
+  display: none !important;
+}
+
 .meeting-container {
   display: flex;
   height: 100vh;
@@ -6,7 +38,7 @@
 .chat-section {
   flex: 1;
   border-right: 2px solid #ccc;
-  padding: 10px;
+  position: relative;
 }
 
 .coding-section {
@@ -25,4 +57,19 @@
   background: #f8f8f8;
   padding: 10px;
   border-top: 2px solid #ccc;
+}
+
+@media screen and (max-width: 768px) {
+  .meeting-container {
+    flex-direction: column;
+  }
+
+  .chat-section {
+    border-right: none;
+    border-bottom: 2px solid #ccc;
+  }
+
+  .coding-section {
+    flex-direction: column;
+  }
 }

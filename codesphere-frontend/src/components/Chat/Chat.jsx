@@ -6,13 +6,28 @@ import "./Chat.css";
 const Chat = ({ meetingId, name }) => {
     const { message, setMessage, sendMessage } = useMessageContext();
 
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            if (message.trim()) sendMessage();
+        }
+    };
+
     return (
         <div className="chat-container">
-            <h2>Group Chat</h2>
+            <div className="chat-container-title">Group Chat</div>
             <MessageContainer />
-            {/* <div>{messages.map((msg, index) => (<p key={index}><b>{msg.sender}:</b> {msg.text}</p>))}</div> */}
-            <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} />
-            <button onClick={sendMessage}>Send</button>
+            <div className="chat-input-container">
+                <input
+                    type="text"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="chat-input"
+                    onKeyDown={handleKeyDown}
+                    placeholder="Type a message..."
+                />
+                <button onClick={sendMessage} className="send-message">Send</button>
+            </div>
         </div>
     );
 };
