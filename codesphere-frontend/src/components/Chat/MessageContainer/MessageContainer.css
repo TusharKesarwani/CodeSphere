@@ -1,0 +1,9 @@
+.message-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 16px;
+  height: 80vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
