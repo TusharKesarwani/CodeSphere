@@ -15,7 +15,7 @@ const Chat = ({ meetingId, name }) => {
 
     return (
         <div className="chat-container">
-            <div className="chat-container-title">Group Chat</div>
+            <div className="chat-title">Group Chat</div>
             <MessageContainer />
             <div className="chat-input-container">
                 <input

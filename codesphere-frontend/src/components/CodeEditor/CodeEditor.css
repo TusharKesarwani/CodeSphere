@@ -1,0 +1,17 @@
+.code-editor {
+  background: #282c34;
+  color: #abb2bf;
+  font-family: "Fira Code", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-y: auto;
+}
+
+.code-editor-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #61dafb;
+}

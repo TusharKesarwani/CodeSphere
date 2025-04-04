@@ -5,14 +5,15 @@
   height: 100%;
 }
 
-.chat-container-title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.chat-title {
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #61dafb;
+  text-align: center;
   padding: 10px;
-  background-color: #f0f0f0;
   border-bottom: 2px solid #ccc;
-  font-size: 1.5em;
+  border-radius: 5px;
 }
 
 .chat-input-container {

@@ -8,7 +8,7 @@ const LandingPage = () => {
     const { isJoined } = useMeetingContext();
 
     return (
-        <div>
+        <div className="landing-page-container">
             {!isJoined ? (
                 <JoinPage />
             ) : (
