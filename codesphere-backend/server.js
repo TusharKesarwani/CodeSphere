@@ -36,6 +36,11 @@ io.on("connection", (socket) => {
         console.log(`Message from ${sender} in meeting ${meetingId}: ${text}`);
     });
 
+    socket.on("sendCode", ({ meetingId, sender, newCode, output }) => {
+        io.to(meetingId).emit("receiveCode", newCode, output);
+        console.log(`Code from ${sender} in meeting ${meetingId}: ${newCode} and Output: ${output}`);
+    });
+
     socket.on("disconnect", () => {
         console.log("Client disconnected", socket.id);
     });

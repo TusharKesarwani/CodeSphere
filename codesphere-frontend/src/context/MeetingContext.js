@@ -1,5 +1,6 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "axios";
+import socket from "../socket";
 
 export const MeetingContext = createContext();
 
@@ -62,6 +63,43 @@ export const MeetingProvider = ({ children }) => {
             setError("Error creating meeting.");
         }
     }
+
+    useEffect(() => {
+        const handleDisconnect = () => {
+            console.warn("Socket disconnected");
+            setIsJoined(false);
+            localStorage.removeItem("socketId");
+            setError("Socket disconnected. Please refresh the page.");
+
+            if (meetingId && name) {
+                axios.put(`${BACKEND_URL}/api/meetings/${meetingId}/update-socket`, {
+                    name,
+                    newSocketId: null,
+                });
+            }
+        };
+
+        const handleConnect = () => {
+            console.log("Socket connected:", socket.id);
+            localStorage.setItem("socketId", socket.id);
+            setError("");
+
+            if (meetingId && name) {
+                axios.put(`${BACKEND_URL}/api/meetings/${meetingId}/update-socket`, {
+                    name,
+                    newSocketId: socket.id,
+                });
+            }
+        };
+
+        socket.on("disconnect", handleDisconnect);
+        socket.on("connect", handleConnect);
+
+        return () => {
+            socket.off("disconnect", handleDisconnect);
+            socket.off("connect", handleConnect);
+        };
+    }, [meetingId, name, BACKEND_URL]);
 
     return (
         <MeetingContext.Provider value={{ meetingId, setMeetingId, name, setName, participants, setParticipants, isJoined, setIsJoined, error, setError, createMeeting, joinMeeting }}>

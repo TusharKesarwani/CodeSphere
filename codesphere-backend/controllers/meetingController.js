@@ -36,3 +36,22 @@ exports.getMeeting = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+exports.updateSocketId = async (req, res) => {
+    const { name, newSocketId } = req.body;
+
+    try {
+        const meeting = await Meeting.findOne({ meetingId: req.params.meetingId });
+        if (!meeting) return res.status(404).json({ message: "Meeting not found" });
+
+        meeting.participants = meeting.participants.map((participant) =>
+            participant.name === name ? { ...participant, socketId: newSocketId } : participant
+        );
+
+        await meeting.save();
+        res.status(200).json({ message: "Socket ID updated successfully" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};

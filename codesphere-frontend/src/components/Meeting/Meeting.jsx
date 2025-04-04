@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./Meeting.css";
 import socket from "../../socket";
 import Chat from "../Chat/Chat";
@@ -8,7 +8,6 @@ import { useMeetingContext } from "../../context/MeetingContext";
 
 const Meeting = () => {
   const { meetingId, name } = useMeetingContext();
-  const [code, setCode] = useState("// Write JavaScript here...");
 
   useEffect(() => {
     socket.emit("joinMeeting", { meetingId, name });
@@ -20,8 +19,8 @@ const Meeting = () => {
         <Chat meetingId={meetingId} name={name} />
       </div>
       <div className="coding-section">
-        <CodeEditor code={code} setCode={setCode} />
-        <ResultView code={code} />
+        <CodeEditor />
+        <ResultView />
       </div>
     </div>
   );

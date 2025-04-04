@@ -3,9 +3,11 @@ import "./CodeEditor.css";
 import { javascript } from "@codemirror/lang-javascript";
 import CodeMirror from '@uiw/react-codemirror';
 import { okaidia } from '@uiw/codemirror-theme-okaidia';
+import { useCodeContext } from "../../context/CodeContext";
 
+const CodeEditor = () => {
+  const { code, setCode } = useCodeContext();
 
-const CodeEditor = ({ code, setCode }) => {
   return (
     <div className="code-editor">
       <div className="code-editor-title">Code Editor</div>

@@ -1,17 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ResultView.css";
+import { useCodeContext } from "../../context/CodeContext";
 
-const ResultView = ({ code }) => {
-    const [output, setOutput] = useState("");
-
-    const runCode = () => {
-        try {
-            const result = eval(code);
-            setOutput(result !== undefined ? result.toString() : "No output");
-        } catch (error) {
-            setOutput(`Error: ${error.message}`);
-        }
-    };
+const ResultView = () => {
+    const { output, runCode } = useCodeContext();
 
     return (
         <div className="result-view">
