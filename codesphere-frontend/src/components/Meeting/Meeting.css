@@ -64,6 +64,8 @@ scrollbar-button {
 @media screen and (max-width: 768px) {
   .meeting-container {
     flex-direction: column;
+    height: auto;
+    min-height: 100vh;
   }
 
   .chat-section {

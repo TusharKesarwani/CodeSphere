@@ -59,7 +59,7 @@
 
 .chat-input:focus {
   outline: none;
-  background-color: #f0f0f0;
+  background-color: #d3dae2;
 }
 
 .send-message {
