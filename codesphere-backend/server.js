@@ -55,12 +55,13 @@ io.on("connection", (socket) => {
                 return;
             }
 
+            const removedParticipant = meeting.participants.filter(p => p.socketId === socket.id);
             meeting.participants = meeting.participants.filter(p => p.socketId !== socket.id);
             await meeting.save();
 
-            console.log(`Removed participant with socketId ${socket.id} from meeting ${meeting.meetingId}`);
+            console.log(`Removed participant with socketId ${socket.id} and details ${removedParticipant} from meeting ${meeting.meetingId}`);
 
-            io.to(meeting.meetingId).emit("participantDisconnected", socket.id);
+            io.to(meeting.meetingId).emit("participantDisconnected", socket.id, removedParticipant[0].name);
         } catch (err) {
             console.error("Error while removing participant on disconnect:", err);
         }

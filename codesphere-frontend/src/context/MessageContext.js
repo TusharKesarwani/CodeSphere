@@ -36,7 +36,8 @@ export const MessageProvider = ({ children }) => {
                 });
         });
 
-        socket.on("participantDisconnected", (socketId) => {
+        socket.on("participantDisconnected", (socketId, removedParticipant) => {
+            setMessages((prev) => [...prev, { sender: "System", text: `${removedParticipant} left the meeting`, type: "notification" }]);
             setParticipants((prev) => prev.filter((participant) => participant.socketId !== socketId));
         });
 
