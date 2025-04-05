@@ -33,11 +33,14 @@ export const MeetingProvider = ({ children }) => {
             }, {
                 headers: { "Content-Type": "application/json" }
             });
-            console.log(response.data);
+            console.log(response?.data);
 
-            if (response.status === 200 && response.data) {
+            if (response?.status === 200 && response?.data) {
                 setIsJoined(true);
-                setParticipants(response.data.participants || []);
+                setParticipants(response?.data?.participants || []);
+                setError("");
+            } else if (response?.data?.error) {
+                setError(response?.data?.error);
             } else {
                 setError("Meeting ID not found.");
             }
@@ -64,14 +67,18 @@ export const MeetingProvider = ({ children }) => {
             }, {
                 headers: { "Content-Type": "application/json" }
             });
-            console.log(response.data);
-            if (response.data.error) {
-                setError(response.data.error);
-                return;
-            }
+            console.log(response?.data);
 
-            setMeetingId(response.data.meetingId);
-            setIsJoined(true);
+            if (response?.status === 200 && response?.data) {
+                setIsJoined(true);
+                setMeetingId(response?.data?.meetingId);
+                setParticipants(response?.data?.participants || []);
+                setError("");
+            } else if (response?.data?.error) {
+                setError(response?.data?.error);
+            } else {
+                setError("Error creating meeting.");
+            }
         } catch (error) {
             setError("Error creating meeting.");
         }

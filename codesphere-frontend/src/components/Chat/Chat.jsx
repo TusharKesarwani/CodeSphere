@@ -21,7 +21,7 @@ const Chat = () => {
                 <div className="chat-title">Group Chat</div>
                 <div className="chat-info">
                     <div className="meeting-id">Meeting Id: {meetingId}</div>
-                    <div className="chat-participants">{participants.length + 1} people joined</div>
+                    <div className="chat-participants">{participants.length} people joined</div>
                 </div>
             </div>
             <MessageContainer />

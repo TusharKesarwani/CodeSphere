@@ -9,7 +9,7 @@ const JoinPage = () => {
     return (
         <div>
             <div className="join-meeting-container">
-                <h2 className="join-meeting-title">Join a Meeting</h2>
+                <h2 className="join-meeting-title">{haveMeetingId ? "Join" : "Create"} a Meeting</h2>
                 <div className="join-meeting-form">
                     <div className="join-meeting-inputs">
                         {
