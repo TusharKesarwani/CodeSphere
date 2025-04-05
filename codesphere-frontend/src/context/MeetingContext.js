@@ -1,10 +1,12 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import axios from "axios";
 import socket from "../socket";
+import { v4 as uuidv4 } from 'uuid';
 
 export const MeetingContext = createContext();
 
 export const MeetingProvider = ({ children }) => {
+    const [myUUID] = useState(uuidv4());
     const [email, setEmail] = useState("");
     const [meetingId, setMeetingId] = useState("");
     const [name, setName] = useState("");
@@ -27,6 +29,7 @@ export const MeetingProvider = ({ children }) => {
 
         try {
             const response = await axios.post(`${BACKEND_URL}/api/meetings/${meetingId}`, {
+                myUUID,
                 email,
                 name,
                 socketId: localStorage.getItem("socketId"),
@@ -62,6 +65,7 @@ export const MeetingProvider = ({ children }) => {
 
         try {
             const response = await axios.post(BACKEND_URL + "/api/meetings/create", {
+                myUUID,
                 email,
                 name,
                 socketId: localStorage.getItem("socketId"),
@@ -91,41 +95,17 @@ export const MeetingProvider = ({ children }) => {
             setIsJoined(false);
             localStorage.removeItem("socketId");
             setError("Socket disconnected. Please refresh the page.");
-
-            if (meetingId && name) {
-                axios.put(`${BACKEND_URL}/api/meetings/${meetingId}/update-socket`, {
-                    email,
-                    name,
-                    newSocketId: null,
-                });
-            }
-        };
-
-        const handleConnect = () => {
-            console.log("Socket connected:", socket.id);
-            localStorage.setItem("socketId", socket.id);
-            setError("");
-
-            if (meetingId && name) {
-                axios.put(`${BACKEND_URL}/api/meetings/${meetingId}/update-socket`, {
-                    email,
-                    name,
-                    newSocketId: socket.id,
-                });
-            }
         };
 
         socket.on("disconnect", handleDisconnect);
-        socket.on("connect", handleConnect);
 
         return () => {
             socket.off("disconnect", handleDisconnect);
-            socket.off("connect", handleConnect);
         };
-    }, [meetingId, name, email, BACKEND_URL]);
+    }, []);
 
     return (
-        <MeetingContext.Provider value={{ email, setEmail, meetingId, setMeetingId, name, setName, participants, setParticipants, isJoined, setIsJoined, error, setError, createMeeting, joinMeeting }}>
+        <MeetingContext.Provider value={{ myUUID, email, setEmail, meetingId, setMeetingId, name, setName, participants, setParticipants, isJoined, setIsJoined, error, setError, createMeeting, joinMeeting }}>
             {children}
         </MeetingContext.Provider>
     );

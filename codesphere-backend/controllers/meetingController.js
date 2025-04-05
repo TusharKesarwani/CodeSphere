@@ -3,9 +3,9 @@ const { v4: uuidv4 } = require("uuid");
 
 exports.createMeeting = async (req, res) => {
     try {
-        const { email, name, socketId } = req.body;
-        if (!email || !name || !socketId) {
-            return res.status(400).json({ error: "Email, name, and socketId are required." });
+        const { myUUID, email, name, socketId } = req.body;
+        if (!myUUID || !email || !name || !socketId) {
+            return res.status(400).json({ error: "myUUID, email, name, and socketId are required." });
         }
 
         console.log("Creating a new meeting...");
@@ -13,7 +13,7 @@ exports.createMeeting = async (req, res) => {
         const newMeeting = new Meeting({
             meetingId,
             participants: [{
-                uuid: uuidv4(),
+                uuid: myUUID,
                 email,
                 name,
                 socketId,
@@ -33,10 +33,10 @@ exports.createMeeting = async (req, res) => {
 
 exports.getMeeting = async (req, res) => {
     try {
-        const { email, name, socketId } = req.body;
+        const { myUUID, email, name, socketId } = req.body;
         const { meetingId } = req.params;
 
-        if (!email || !name || !socketId || !meetingId) {
+        if (!myUUID || !email || !name || !socketId || !meetingId) {
             return res.status(400).json({ error: "Email, name, socketId, and meetingId are required." });
         }
 
@@ -46,7 +46,7 @@ exports.getMeeting = async (req, res) => {
         console.log(`Meeting retrieved with ID: ${meetingId}`);
 
         meeting.participants.push({
-            uuid: uuidv4(),
+            UUID: myUUID,
             email,
             name,
             socketId,
@@ -56,25 +56,6 @@ exports.getMeeting = async (req, res) => {
         res.status(200).json(meeting);
     } catch (err) {
         res.status(500).json({ error: err.message });
-    }
-};
-
-exports.updateSocketId = async (req, res) => {
-    const { email, name, newSocketId } = req.body;
-
-    try {
-        const meeting = await Meeting.findOne({ meetingId: req.params.meetingId });
-        if (!meeting) return res.status(404).json({ message: "Meeting not found" });
-
-        meeting.participants = meeting.participants.map((participant) =>
-            participant.email === email && participant.name === name ? { ...participant, socketId: newSocketId } : participant
-        );
-        await meeting.save();
-
-        res.status(200).json({ message: "Socket ID updated successfully" });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Internal server error" });
     }
 };
 

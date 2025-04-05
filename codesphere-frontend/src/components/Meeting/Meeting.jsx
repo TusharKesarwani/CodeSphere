@@ -7,11 +7,11 @@ import ResultView from "../ResultView/ResultView";
 import { useMeetingContext } from "../../context/MeetingContext";
 
 const Meeting = () => {
-  const { meetingId, name, email } = useMeetingContext();
+  const { meetingId, name, email, myUUID } = useMeetingContext();
 
   useEffect(() => {
-    socket.emit("joinMeeting", { email, meetingId, name });
-  }, [meetingId, name, email]);
+    socket.emit("joinMeeting", { email, meetingId, name, myUUID });
+  }, [meetingId, name, email, myUUID]);
 
   return (
     <div className="meeting-container">

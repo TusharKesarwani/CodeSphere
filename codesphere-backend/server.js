@@ -30,7 +30,7 @@ app.use("/api/messages", messageRoutes);
 io.on("connection", (socket) => {
     console.log("New client connected:", socket.id);
 
-    socket.on("joinMeeting", async ({ meetingId, name }) => {
+    socket.on("joinMeeting", async ({ meetingId, name, myUUID }) => {
         socket.join(meetingId);
         io.to(meetingId).emit("newParticipant", { name, socketId: socket.id });
         try {
@@ -40,6 +40,7 @@ io.on("connection", (socket) => {
             }
 
             const message = {
+                UUID: `${myUUID}`,
                 sender: "System",
                 text: `${name} joined the meeting`,
                 type: "notification",
@@ -67,7 +68,6 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", async () => {
         console.log("Client disconnected", socket.id);
-        // io.emit("participantDisconnected", socket.id);
         try {
             const meeting = await Meeting.findOne({ "participants.socketId": socket.id });
             if (!meeting) {
@@ -79,6 +79,7 @@ io.on("connection", (socket) => {
             meeting.participants = meeting.participants.filter(p => p.socketId !== socket.id);
 
             const message = {
+                UUID: `${removedParticipant[0].UUID}`,
                 sender: "System",
                 text: `${removedParticipant[0].name} left the meeting`,
                 type: "notification",

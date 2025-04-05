@@ -8,7 +8,7 @@ export const MessageContext = createContext();
 export const MessageProvider = ({ children }) => {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState("");
-    const { meetingId, name, setParticipants } = useMeetingContext();
+    const { myUUID, meetingId, name, setParticipants } = useMeetingContext();
     const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
     useEffect(() => {
@@ -50,6 +50,7 @@ export const MessageProvider = ({ children }) => {
     const sendMessage = async () => {
         if (message.trim()) {
             const msgObj = {
+                myUUID,
                 meetingId,
                 sender: name,
                 text: message,
