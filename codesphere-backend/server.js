@@ -23,6 +23,7 @@ const meetingRoutes = require("./routes/meetingRoutes");
 app.use("/api/meetings", meetingRoutes);
 
 const messageRoutes = require("./routes/messageRoutes");
+const Meeting = require("./models/Meeting");
 app.use("/api/messages", messageRoutes);
 
 io.on("connection", (socket) => {
@@ -44,9 +45,26 @@ io.on("connection", (socket) => {
         console.log(`Code from ${sender} in meeting ${meetingId}: ${newCode} and Output: ${output}`);
     });
 
-    socket.on("disconnect", () => {
+    socket.on("disconnect", async () => {
         console.log("Client disconnected", socket.id);
-        io.emit("participantDisconnected", socket.id);
+        // io.emit("participantDisconnected", socket.id);
+        try {
+            const meeting = await Meeting.findOne({ "participants.socketId": socket.id });
+            if (!meeting) {
+                console.log(`Meeting not found for socketId ${socket.id}`);
+                return;
+            }
+
+            meeting.participants = meeting.participants.filter(p => p.socketId !== socket.id);
+            await meeting.save();
+
+            console.log(`Removed participant with socketId ${socket.id} from meeting ${meeting.meetingId}`);
+
+            io.to(meeting.meetingId).emit("participantDisconnected", socket.id);
+        } catch (err) {
+            console.error("Error while removing participant on disconnect:", err);
+        }
+
     });
 });
 
