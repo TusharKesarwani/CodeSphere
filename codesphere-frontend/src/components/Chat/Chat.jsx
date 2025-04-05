@@ -1,9 +1,11 @@
 import React from "react";
+import "./Chat.css";
 import MessageContainer from "./MessageContainer/MessageContainer";
 import { useMessageContext } from "../../context/MessageContext";
-import "./Chat.css";
+import { useMeetingContext } from "../../context/MeetingContext";
 
-const Chat = ({ meetingId, name }) => {
+const Chat = () => {
+    const { meetingId, participants } = useMeetingContext();
     const { message, setMessage, sendMessage } = useMessageContext();
 
     const handleKeyDown = (e) => {
@@ -15,7 +17,13 @@ const Chat = ({ meetingId, name }) => {
 
     return (
         <div className="chat-container">
-            <div className="chat-title">Group Chat</div>
+            <div className="chat-header">
+                <div className="chat-title">Group Chat</div>
+                <div className="chat-info">
+                    <div className="meeting-id">Meeting Id: {meetingId}</div>
+                    <div className="chat-participants">{participants.length + 1} people joined</div>
+                </div>
+            </div>
             <MessageContainer />
             <div className="chat-input-container">
                 <input

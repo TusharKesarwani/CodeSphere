@@ -6,6 +6,7 @@ exports.createMeeting = async (req, res) => {
         const meetingId = Math.random().toString(36).substring(2, 10);
         const newMeeting = new Meeting({
             meetingId, participants: [{
+                email: req.body.email,
                 name: req.body.name,
                 socketId: req.body.socketId,
             }], createdAt: new Date()
@@ -27,6 +28,7 @@ exports.getMeeting = async (req, res) => {
         if (!meeting) return res.status(404).json({ message: "Meeting Not Found" });
         console.log(`Meeting retrieved with ID: ${req.params.meetingId}`);
         meeting.participants.push({
+            email: req.body.email,
             name: req.body.name,
             socketId: req.body.socketId,
         });

@@ -16,7 +16,7 @@ const Meeting = () => {
   return (
     <div className="meeting-container">
       <div className="chat-section">
-        <Chat meetingId={meetingId} name={name} />
+        <Chat />
       </div>
       <div className="coding-section">
         <CodeEditor />

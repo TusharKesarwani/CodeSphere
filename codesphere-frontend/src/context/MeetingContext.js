@@ -5,6 +5,7 @@ import socket from "../socket";
 export const MeetingContext = createContext();
 
 export const MeetingProvider = ({ children }) => {
+    const [email, setEmail] = useState("");
     const [meetingId, setMeetingId] = useState("");
     const [name, setName] = useState("");
     const [participants, setParticipants] = useState([]);
@@ -13,13 +14,20 @@ export const MeetingProvider = ({ children }) => {
     const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
     const joinMeeting = async () => {
-        if (!meetingId.trim() || !name.trim()) {
-            setError("Please enter a valid Meeting ID and Name.");
+        if (!meetingId.trim() || !name.trim() || !email.trim() || !email.includes("@")) {
+            if (!meetingId.trim()) {
+                setError("Please enter a valid Meeting ID.");
+            } else if (!name.trim()) {
+                setError("Please enter a valid Name.");
+            } else if (!email.trim() || !email.includes("@")) {
+                setError("Please enter a valid Email.");
+            }
             return;
         }
 
         try {
             const response = await axios.post(`${BACKEND_URL}/api/meetings/${meetingId}`, {
+                email,
                 name,
                 socketId: localStorage.getItem("socketId"),
             }, {
@@ -39,13 +47,18 @@ export const MeetingProvider = ({ children }) => {
     };
 
     const createMeeting = async () => {
-        if (!name.trim()) {
-            setError("Please enter a valid Name.");
+        if (!name.trim() || !email.trim() || !email.includes("@")) {
+            if (!name.trim()) {
+                setError("Please enter a valid Name.");
+            } else if (!email.trim() || !email.includes("@")) {
+                setError("Please enter a valid Email.");
+            }
             return;
         }
 
         try {
             const response = await axios.post(BACKEND_URL + "/api/meetings/create", {
+                email,
                 name,
                 socketId: localStorage.getItem("socketId"),
             }, {
@@ -73,6 +86,7 @@ export const MeetingProvider = ({ children }) => {
 
             if (meetingId && name) {
                 axios.put(`${BACKEND_URL}/api/meetings/${meetingId}/update-socket`, {
+                    email,
                     name,
                     newSocketId: null,
                 });
@@ -86,6 +100,7 @@ export const MeetingProvider = ({ children }) => {
 
             if (meetingId && name) {
                 axios.put(`${BACKEND_URL}/api/meetings/${meetingId}/update-socket`, {
+                    email,
                     name,
                     newSocketId: socket.id,
                 });
@@ -99,10 +114,10 @@ export const MeetingProvider = ({ children }) => {
             socket.off("disconnect", handleDisconnect);
             socket.off("connect", handleConnect);
         };
-    }, [meetingId, name, BACKEND_URL]);
+    }, [meetingId, name, email, BACKEND_URL]);
 
     return (
-        <MeetingContext.Provider value={{ meetingId, setMeetingId, name, setName, participants, setParticipants, isJoined, setIsJoined, error, setError, createMeeting, joinMeeting }}>
+        <MeetingContext.Provider value={{ email, setEmail, meetingId, setMeetingId, name, setName, participants, setParticipants, isJoined, setIsJoined, error, setError, createMeeting, joinMeeting }}>
             {children}
         </MeetingContext.Provider>
     );
