@@ -2,25 +2,27 @@
 
 ## 🚀 Overview
 
-**CodeSphere** is a real-time collaborative web application designed for developers, students, and teams to **collaborate on JavaScript code**, **chat in real-time**, and **track meeting sessions** seamlessly. The project uses modern technologies like **React.js**, **Node.js**, **Express.js**, **MongoDB**, and **Socket.io** to create an interactive and dynamic experience.
+**CodeSphere** is a full-stack, real-time collaborative web application designed for developers, students, and teams to:
 
-Users can create or join meetings using a unique meeting ID and collaborate with others via:
+- 👨‍💻 **Collaborate on JavaScript code**
+- 💬 **Chat live with meeting participants**
+- 🧑‍🤝‍🧑 **Track participant presence**
+- 🧾 **Persist messages and meetings in MongoDB**
 
-- A **live chat system**
-- A **shared JavaScript code editor** with output display
-- A **real-time participant tracking** system
+Built with modern technologies like **React**, **Node.js**, **Express**, **MongoDB**, and **Socket.io**, CodeSphere delivers a smooth, synced experience for remote coding and team discussions.
 
 ---
 
 ## 🌟 Key Features
 
-- 🔐 **Meeting Management**: Users can create and join meetings with unique IDs.
-- 🧑‍💻 **Real-time Code Collaboration**: Shared code editor synced across all participants.
-- 📤 **Live Code Execution**: Run JavaScript code and share output with other users.
-- 💬 **Group Chat**: Real-time messaging system within the meeting.
-- 👥 **Participants View**: See who is currently in the meeting.
-- ⚡ **WebSocket-based Communication**: Ensures smooth real-time interaction.
-- 🔒 **Environment Variable Config Support**: Backend URL and socket endpoints are configurable via `.env`.
+- 🔐 **Meeting Creation & Joining**: Generate or enter a unique meeting ID to collaborate.
+- 👥 **Real-Time Participant Tracking**: See who joins or leaves the session.
+- 💬 **Persistent Group Chat**: All messages are stored and visible to every participant, even if they refresh.
+- 💻 **Live Code Collaboration**: JavaScript editor with real-time sharing and output.
+- ⚡ **Socket.io for Real-Time Sync**: Chat, code, and participants update instantly.
+- 📁 **MongoDB Persistence**: Meetings and messages are saved securely in the database.
+- 📦 **UUID-based Identification**: Unique participant IDs generated using UUIDv4.
+- 🌐 **Environment Config Support**: Easy switching between dev and prod environments.
 
 ---
 
@@ -29,15 +31,16 @@ Users can create or join meetings using a unique meeting ID and collaborate with
 ```
 CodeSphere/
 │
-├── codesphere-frontend/        # React frontend
-│   ├── src/components/         # Reusable UI components
-│   ├── src/context/            # React Contexts (Meeting, Message, Code)
+├── codesphere-frontend/        # React.js app
+│   ├── src/components/         # Chat UI, Code editor, etc.
+│   ├── src/context/            # React Contexts for state sharing
 │   └── ...
 │
-├── codesphere-backend/     # Node.js backend
-│   ├── models/             # MongoDB schemas
-│   ├── routes/             # API routes
-│   └── ...
+├── codesphere-backend/         # Express.js server
+│   ├── models/Meeting.js       # Mongoose schema for meetings & messages
+│   ├── controllers/            # Logic for handling APIs
+│   ├── routes/                 # REST API endpoints
+│   └── server.js               # Entry point with Socket.io integration
 ```
 
 ---
@@ -117,31 +120,34 @@ The app will run at: `http://localhost:3000`
 
 ## 🧠 Usage
 
-1. Open the app in your browser: `http://localhost:3000`
-2. Enter your name and create or join a meeting using a Meeting ID.
-3. Use the chat panel to message other users in real time.
-4. Write JavaScript code in the editor and click **Run** to execute and share results.
-5. Watch as code, output, and messages sync live across all participants!
+1. Open `http://localhost:3000` in your browser.
+2. Enter your name, email, and join or create a meeting.
+3. Collaborate on code in the editor.
+4. Send and receive real-time messages (stored in the DB).
+5. See when participants join or disconnect.
+6. All messages are persisted and restored on reload.
 
 ---
 
 ## 🛠️ Technologies Used
 
 - **Frontend**: React.js, HTML, CSS, JavaScript
+- **State Management**: React Context API
 - **Backend**: Node.js, Express.js
-- **Database**: MongoDB
-- **Real-Time**: Socket.io
-- **Others**: Axios, dotenv, ESLint
+- **Database**: MongoDB + Mongoose
+- **Real-Time Communication**: Socket.io
+- **Utilities**: Axios, dotenv, UUID
 
 ---
 
 ## 💡 Future Improvements
 
-- 🧪 Add syntax highlighting with Monaco or CodeMirror
-- 🔐 Add authentication and user profiles
-- 📜 Add code version history
-- 🎥 Integrate video/audio conferencing
-- 🧑‍🏫 Instructor/host mode with admin controls
+- 🎨 Syntax highlighting with **Monaco Editor**
+- 🔐 Authentication & user sessions
+- 🧠 AI-powered code assistance
+- 📚 Code version control & history
+- 🎥 Video/audio chat integration
+- 🛑 Admin controls for host
 
 ---
 
