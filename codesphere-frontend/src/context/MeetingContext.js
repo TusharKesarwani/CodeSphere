@@ -116,6 +116,9 @@ export const MeetingProvider = ({ children }) => {
 
         socket.on("disconnect", handleDisconnect);
         socket.on("connect", handleConnect);
+        socket.on("newParticipant", (participant) => {
+            setParticipants((prev) => [...prev, participant]);
+        });
 
         return () => {
             socket.off("disconnect", handleDisconnect);
