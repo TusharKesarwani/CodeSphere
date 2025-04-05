@@ -39,8 +39,19 @@ export const MessageProvider = ({ children }) => {
         }
     };
 
+    const fetchMessages = async () => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/messages/${meetingId}`);
+            if (response.status === 200) {
+                setMessages(response.data);
+            }
+        } catch (err) {
+            console.error("Failed to fetch messages:", err.message);
+        }
+    };
+
     return (
-        <MessageContext.Provider value={{ messages, setMessages, message, setMessage, sendMessage }}>
+        <MessageContext.Provider value={{ messages, setMessages, message, setMessage, sendMessage, fetchMessages }}>
             {children}
         </MessageContext.Provider>
     );

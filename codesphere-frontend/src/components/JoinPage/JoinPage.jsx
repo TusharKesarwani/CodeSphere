@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import "./JoinPage.css";
 import { useMeetingContext } from "../../context/MeetingContext";
+import { useMessageContext } from './../../context/MessageContext';
 
 const JoinPage = () => {
     const { email, setEmail, meetingId, setMeetingId, name, setName, error, createMeeting, joinMeeting } = useMeetingContext();
+    const { setMessages } = useMessageContext();
     const [haveMeetingId, setHaveMeetingId] = useState(false);
 
     return (
@@ -36,7 +38,7 @@ const JoinPage = () => {
                     <div className="join-button-container">
                         {
                             haveMeetingId ? (
-                                <button className="join-button" onClick={joinMeeting}>Join Meeting</button>
+                                <button className="join-button" onClick={() => joinMeeting(setMessages)}>Join Meeting</button>
                             ) : (
                                 <button className="create-button" onClick={createMeeting}>Create Meeting</button>
                             )

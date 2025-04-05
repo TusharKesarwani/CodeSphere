@@ -13,7 +13,7 @@ export const MeetingProvider = ({ children }) => {
     const [error, setError] = useState("");
     const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-    const joinMeeting = async () => {
+    const joinMeeting = async (setMessages) => {
         if (!meetingId.trim() || !name.trim() || !email.trim() || !email.includes("@")) {
             if (!meetingId.trim()) {
                 setError("Please enter a valid Meeting ID.");
@@ -38,6 +38,7 @@ export const MeetingProvider = ({ children }) => {
             if (response?.status === 200 && response?.data) {
                 setIsJoined(true);
                 setParticipants(response?.data?.participants || []);
+                setMessages(response?.data?.messages || []);
                 setError("");
             } else if (response?.data?.error) {
                 setError(response?.data?.error);
@@ -122,6 +123,20 @@ export const MeetingProvider = ({ children }) => {
             socket.off("connect", handleConnect);
         };
     }, [meetingId, name, email, BACKEND_URL]);
+
+    useEffect(() => {
+        socket.on("newParticipant", (participant) => {
+            axios.get(`${BACKEND_URL}/api/meetings/${meetingId}/participants`)
+                .then((response) => {
+                    if (response.status === 200) {
+                        setParticipants(response.data.participants);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching participants:", error);
+                });
+        });
+    }, [setParticipants, meetingId, BACKEND_URL]);
 
     return (
         <MeetingContext.Provider value={{ email, setEmail, meetingId, setMeetingId, name, setName, participants, setParticipants, isJoined, setIsJoined, error, setError, createMeeting, joinMeeting }}>

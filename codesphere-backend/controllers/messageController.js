@@ -29,3 +29,23 @@ exports.saveMessage = async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+exports.getMessages = async (req, res) => {
+    try {
+        const { meetingId } = req.params;
+
+        if (!meetingId) {
+            return res.status(400).json({ error: "Meeting ID is required." });
+        }
+
+        const meeting = await Meeting.findOne({ meetingId });
+        if (!meeting) {
+            return res.status(404).json({ error: "Meeting not found." });
+        }
+
+        res.status(200).json(meeting.messages);
+    } catch (err) {
+        console.error("Error fetching messages:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};

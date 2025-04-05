@@ -77,3 +77,18 @@ exports.updateSocketId = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
+exports.getParticipants = async (req, res) => {
+    try {
+        const { meetingId } = req.params;
+        if (!meetingId) return res.status(400).json({ message: "Meeting ID is required" });
+
+        const meeting = await Meeting.findOne({ meetingId });
+        if (!meeting) return res.status(404).json({ message: "Meeting not found" });
+
+        res.status(200).json(meeting.participants);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
