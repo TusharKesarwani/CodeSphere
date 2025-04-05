@@ -29,7 +29,7 @@ Users can create or join meetings using a unique meeting ID and collaborate with
 ```
 CodeSphere/
 │
-├── codesphere-frontend/    # React frontend
+├── codesphere-frontend/        # React frontend
 │   ├── src/components/         # Reusable UI components
 │   ├── src/context/            # React Contexts (Meeting, Message, Code)
 │   └── ...
