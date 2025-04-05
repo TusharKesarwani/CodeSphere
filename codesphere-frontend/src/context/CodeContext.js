@@ -14,6 +14,10 @@ export const CodeProvider = ({ children }) => {
             setCode(newCode);
             setOutput(output);
         });
+
+        return () => {
+            socket.off("receiveCode");
+        }
     }, [setCode]);
 
     const runCode = () => {

@@ -124,30 +124,6 @@ export const MeetingProvider = ({ children }) => {
         };
     }, [meetingId, name, email, BACKEND_URL]);
 
-    useEffect(() => {
-        socket.on("newParticipant", (participant) => {
-            if (participant?.id === socket.id) return;
-            axios.get(`${BACKEND_URL}/api/meetings/${meetingId}/participants`)
-                .then((response) => {
-                    if (response.status === 200) {
-                        setParticipants(response.data);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error fetching participants:", error);
-                });
-        });
-
-        socket.on("participantDisconnected", (socketId) => {
-            setParticipants((prev) => prev.filter((participant) => participant.socketId !== socketId));
-        });
-
-        return () => {
-            socket.off("newParticipant");
-            socket.off("participantDisconnected");
-        }
-    }, [setParticipants, meetingId, BACKEND_URL]);
-
     return (
         <MeetingContext.Provider value={{ email, setEmail, meetingId, setMeetingId, name, setName, participants, setParticipants, isJoined, setIsJoined, error, setError, createMeeting, joinMeeting }}>
             {children}
