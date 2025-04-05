@@ -19,12 +19,13 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 
+const Meeting = require("./models/Meeting");
 const meetingRoutes = require("./routes/meetingRoutes");
 app.use("/api/meetings", meetingRoutes);
 
 const messageRoutes = require("./routes/messageRoutes");
-const Meeting = require("./models/Meeting");
 app.use("/api/messages", messageRoutes);
+
 
 io.on("connection", (socket) => {
     console.log("New client connected:", socket.id);
@@ -32,6 +33,25 @@ io.on("connection", (socket) => {
     socket.on("joinMeeting", async ({ meetingId, name }) => {
         socket.join(meetingId);
         io.to(meetingId).emit("newParticipant", { name, socketId: socket.id });
+        try {
+            const meeting = await Meeting.findOne({ meetingId });
+            if (!meeting) {
+                return res.status(404).json({ error: "Meeting not found." });
+            }
+
+            const message = {
+                sender: "System",
+                text: `${name} joined the meeting`,
+                type: "notification",
+                timestamp: new Date()
+            };
+
+            meeting.messages.push(message);
+            await meeting.save();
+        } catch (err) {
+            console.log("Error occurred while joining the meeting:", err);
+        }
+
         console.log(`Participant ${name} joined meeting ${meetingId}`);
     });
 
@@ -57,6 +77,15 @@ io.on("connection", (socket) => {
 
             const removedParticipant = meeting.participants.filter(p => p.socketId === socket.id);
             meeting.participants = meeting.participants.filter(p => p.socketId !== socket.id);
+
+            const message = {
+                sender: "System",
+                text: `${removedParticipant[0].name} left the meeting`,
+                type: "notification",
+                timestamp: new Date()
+            };
+            meeting.messages.push(message);
+
             await meeting.save();
 
             console.log(`Removed participant with socketId ${socket.id} and details ${removedParticipant} from meeting ${meeting.meetingId}`);
