@@ -3,3 +3,12 @@
   width: 100vw;
   background-color: #f0f0f0;
 }
+
+@media screen and (max-width: 768px) {
+  .landing-page-container {
+    min-height: 150vh;
+    height: auto;
+    width: 100vw;
+    background-color: #f0f0f0;
+  }
+}
