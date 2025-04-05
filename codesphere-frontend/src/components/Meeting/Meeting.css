@@ -65,12 +65,13 @@ scrollbar-button {
   .meeting-container {
     flex-direction: column;
     height: auto;
-    min-height: 100vh;
+    min-height: 150vh;
   }
 
   .chat-section {
     border-right: none;
     border-bottom: 2px solid #ccc;
+    min-height: 60vh;
   }
 
   .coding-section {
