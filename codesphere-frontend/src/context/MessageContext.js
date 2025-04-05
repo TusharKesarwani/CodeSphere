@@ -17,6 +17,11 @@ export const MessageProvider = ({ children }) => {
         socket.on("newParticipant", (participant) => {
             setMessages((prev) => [...prev, { sender: "System", text: `${participant.name} joined the meeting`, type: "notification" }]);
         });
+
+        return () => {
+            socket.off("receiveMessage");
+            socket.off("newParticipant");
+        }
     }, [setMessages]);
 
     const sendMessage = async () => {

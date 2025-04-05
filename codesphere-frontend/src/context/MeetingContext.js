@@ -126,16 +126,26 @@ export const MeetingProvider = ({ children }) => {
 
     useEffect(() => {
         socket.on("newParticipant", (participant) => {
+            if (participant?.id === socket.id) return;
             axios.get(`${BACKEND_URL}/api/meetings/${meetingId}/participants`)
                 .then((response) => {
                     if (response.status === 200) {
-                        setParticipants(response.data.participants);
+                        setParticipants(response.data);
                     }
                 })
                 .catch((error) => {
                     console.error("Error fetching participants:", error);
                 });
         });
+
+        socket.on("participantDisconnected", (socketId) => {
+            setParticipants((prev) => prev.filter((participant) => participant.socketId !== socketId));
+        });
+
+        return () => {
+            socket.off("newParticipant");
+            socket.off("participantDisconnected");
+        }
     }, [setParticipants, meetingId, BACKEND_URL]);
 
     return (
