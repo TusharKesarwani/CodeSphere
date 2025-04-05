@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import socket from "../socket";
 import { useMeetingContext } from "./MeetingContext";
+import axios from "axios";
 
 export const MessageContext = createContext();
 
@@ -18,10 +19,23 @@ export const MessageProvider = ({ children }) => {
         });
     }, [setMessages]);
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
         if (message.trim()) {
-            socket.emit("sendMessage", { meetingId, sender: name, text: message });
+            const msgObj = {
+                meetingId,
+                sender: name,
+                text: message,
+                type: "message"
+            };
+
+            socket.emit("sendMessage", msgObj);
             setMessage("");
+
+            try {
+                await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/messages/save`, msgObj);
+            } catch (err) {
+                console.error("Failed to save message:", err.message);
+            }
         }
     };
 

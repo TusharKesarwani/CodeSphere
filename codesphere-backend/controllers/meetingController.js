@@ -1,4 +1,5 @@
 const Meeting = require("../models/Meeting");
+const { v4: uuidv4 } = require("uuid");
 
 exports.createMeeting = async (req, res) => {
     try {
@@ -10,11 +11,15 @@ exports.createMeeting = async (req, res) => {
         console.log("Creating a new meeting...");
         const meetingId = Math.random().toString(36).substring(2, 10);
         const newMeeting = new Meeting({
-            meetingId, participants: [{
+            meetingId,
+            participants: [{
+                uuid: uuidv4(),
                 email,
                 name,
                 socketId,
-            }], createdAt: new Date()
+            }],
+            messages: [],
+            createdAt: new Date()
         });
         await newMeeting.save();
         console.log(`Meeting created with ID: ${meetingId}`);
@@ -41,6 +46,7 @@ exports.getMeeting = async (req, res) => {
         console.log(`Meeting retrieved with ID: ${meetingId}`);
 
         meeting.participants.push({
+            uuid: uuidv4(),
             email,
             name,
             socketId,

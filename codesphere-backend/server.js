@@ -22,6 +22,9 @@ app.use(express.json());
 const meetingRoutes = require("./routes/meetingRoutes");
 app.use("/api/meetings", meetingRoutes);
 
+const messageRoutes = require("./routes/messageRoutes");
+app.use("/api/messages", messageRoutes);
+
 io.on("connection", (socket) => {
     console.log("New client connected:", socket.id);
 
