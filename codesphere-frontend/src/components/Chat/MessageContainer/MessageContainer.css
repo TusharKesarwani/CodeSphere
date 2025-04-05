@@ -25,6 +25,8 @@
   background-color: rgb(227, 214, 214);
   color: rgb(0, 0, 0);
   font-size: 14px;
-  text-align: center;
   font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
