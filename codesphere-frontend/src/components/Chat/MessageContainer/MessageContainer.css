@@ -20,3 +20,11 @@
   font-size: 14px;
   line-height: 20px;
 }
+
+.message.notification {
+  background-color: rgb(227, 214, 214);
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  text-align: center;
+  font-weight: 500;
+}

@@ -7,8 +7,8 @@ const MessageContainer = () => {
     return (
         <div className="message-container">
             {messages.map((msg, index) => (
-                <div key={index} className="message">
-                    <strong>{msg.sender}:</strong> {msg.text}
+                <div key={index} className={`message  ${msg.type}`}>
+                    <strong>{msg.type === "message" ? `${msg.sender} :` : ""}</strong> {msg.text}
                 </div>
             ))}
         </div>

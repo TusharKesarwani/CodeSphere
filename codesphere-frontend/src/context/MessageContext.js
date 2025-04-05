@@ -11,7 +11,10 @@ export const MessageProvider = ({ children }) => {
 
     useEffect(() => {
         socket.on("receiveMessage", (msg) => {
-            setMessages((prev) => [...prev, msg]);
+            setMessages((prev) => [...prev, { sender: msg.sender, text: msg.text, type: "message" }]);
+        });
+        socket.on("newParticipant", (participant) => {
+            setMessages((prev) => [...prev, { sender: "System", text: `${participant.name} joined the meeting`, type: "notification" }]);
         });
     }, [setMessages]);
 
