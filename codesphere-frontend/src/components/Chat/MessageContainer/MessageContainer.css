@@ -31,6 +31,10 @@
   align-items: center;
 }
 
+.message-end-ref {
+  height: 1px;
+}
+
 @media screen and (max-width: 768px) {
   .message-container {
     max-height: 75vh;

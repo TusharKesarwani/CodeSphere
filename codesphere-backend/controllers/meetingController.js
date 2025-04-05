@@ -13,7 +13,7 @@ exports.createMeeting = async (req, res) => {
         const newMeeting = new Meeting({
             meetingId,
             participants: [{
-                uuid: myUUID,
+                UUID: myUUID,
                 email,
                 name,
                 socketId,
