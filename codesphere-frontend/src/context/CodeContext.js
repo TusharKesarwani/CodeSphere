@@ -18,14 +18,7 @@ export const CodeProvider = ({ children }) => {
 
     const runCode = () => {
         try {
-            const iframe = document.createElement("iframe");
-            iframe.style.display = "none";
-            iframe.sandbox = "allow-scripts";
-            document.body.appendChild(iframe);
-
-            const iframeWindow = iframe.contentWindow;
-
-            const result = iframeWindow.eval(code);
+            const result = eval(code);
             setOutput(result !== undefined ? result.toString() : "No output");
             if (code && code.trim() !== "// Write JavaScript here..." && code.trim() !== "" && result !== undefined) {
                 socket.emit("sendCode", { meetingId, sender: name, senderEmail: email, newCode: code, output: result });
