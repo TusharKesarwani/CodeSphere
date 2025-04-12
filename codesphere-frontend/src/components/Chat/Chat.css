@@ -133,7 +133,7 @@
   }
 
   .chat-input-container {
-    padding: 5px;
+    padding: 5px 0px;
   }
 
   .chat-input {
@@ -164,10 +164,6 @@
     max-height: 350px;
     padding: 5px;
     font-size: 10px;
-  }
-
-  .chat-input-container {
-    padding: 5px;
   }
 
   .chat-input {
