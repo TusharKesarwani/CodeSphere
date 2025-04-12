@@ -1,0 +1,26 @@
+.participants {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.participants-list {
+  width: 100%;
+  padding: 5px;
+}
+
+.participant-item {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-top: 1px solid #ccc;
+}
+
+.participant-info {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 10px;
+  margin-left: 10px;
+}

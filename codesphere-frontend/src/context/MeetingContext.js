@@ -85,7 +85,7 @@ export const MeetingProvider = ({ children }) => {
                 setError("Error creating meeting.");
             }
         } catch (error) {
-            setError("Error creating meeting.");
+            setError("Error creating meeting. Please wait for 1 minute and try again.");
         }
     }
 

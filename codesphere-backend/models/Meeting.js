@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const MeetingSchema = new mongoose.Schema({
     meetingId: { type: String, required: true, unique: true },
+    users: [{ UUID: String, email: String, name: String, socketId: String }],
     participants: [{ UUID: String, email: String, name: String, socketId: String }],
     messages: [
         {

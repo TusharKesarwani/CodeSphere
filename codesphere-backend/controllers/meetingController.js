@@ -18,6 +18,12 @@ exports.createMeeting = async (req, res) => {
                 name,
                 socketId,
             }],
+            users: [{
+                UUID: myUUID,
+                email,
+                name,
+                socketId,
+            }],
             messages: [],
             createdAt: new Date()
         });
@@ -46,6 +52,12 @@ exports.getMeeting = async (req, res) => {
         console.log(`Meeting retrieved with ID: ${meetingId}`);
 
         meeting.participants.push({
+            UUID: myUUID,
+            email,
+            name,
+            socketId,
+        });
+        meeting.users.push({
             UUID: myUUID,
             email,
             name,
