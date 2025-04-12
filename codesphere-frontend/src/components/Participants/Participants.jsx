@@ -6,13 +6,13 @@ const Participants = () => {
     const { participants } = useMeetingContext();
     return (
         <div className="participants">
-            <h1>Participants</h1>
+            <h3>Participants</h3>
             <div className="participants-list">
                 {participants.map((participant, index) => (
                     <div key={index} className="participant-item">
                         <div className="participant-info">
-                            <h2>{participant.name}</h2>
-                            <h2>{participant.email}</h2>
+                            <h4>{participant.name}</h4>
+                            <h4>{participant.email}</h4>
                         </div>
                     </div>
                 ))}

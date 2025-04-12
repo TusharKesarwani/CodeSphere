@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./Chat.css";
 import MessageContainer from "./MessageContainer/MessageContainer";
 import { useMessageContext } from "../../context/MessageContext";
@@ -9,6 +9,19 @@ const Chat = () => {
     const { meetingId, participants } = useMeetingContext();
     const { message, setMessage, sendMessage } = useMessageContext();
     const [showParticipantContainer, setShowParticipantContainer] = useState(false);
+    const participantContainerRef = useRef(null);
+
+    const handleClickOutside = (e) => {
+        if (participantContainerRef.current && !participantContainerRef.current.contains(e.target)) {
+            setShowParticipantContainer(false);
+        }
+    }
+    React.useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     const handleKeyDown = (e) => {
         if (e.key === "Enter") {
@@ -21,7 +34,7 @@ const Chat = () => {
         <div className="chat-container">
             <div className="chat-header">
                 <div className="chat-title">Group Chat</div>
-                <div className="chat-info">
+                <div className="chat-info" ref={participantContainerRef}>
                     <div className="meeting-id">Meeting Id: {meetingId}</div>
                     <div className="chat-participants">
                         {participants.length} people joined
